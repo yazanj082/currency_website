@@ -1,0 +1,42 @@
+{{> header }}
+<div class="col-6 mx-auto mt-5 text-center">
+    <form   id="myForm">
+    <label >Enter location: </label>
+    <input  type="text" id= "location" name="location"placeholder=" ex:(Nablus)" >
+     <input type="submit" value="OK">
+     </form>
+    <h1 id ="title"></h1>
+    <h1 id ="temp"></h1>
+</div>
+<script>//litening for form events
+    const myForm = document.getElementById("myForm");
+    myForm.addEventListener('submit', function(e){
+        e.preventDefault();
+        let location=document.getElementById('location').value;
+        const data={location};
+        const options={
+            method: 'post',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+            
+        };
+        //sending data from input feild to /api in app file using fetch
+        fetch('/api',options).then(function(response){
+           //changing response to json format
+          return response.json();
+        }).then(function(text){
+           // setting returned response to the feildes
+            let title=document.getElementById("title");
+
+           title.innerText=text.title;
+            let temp=document.getElementById("temp");
+
+           temp.innerText=text.temp;
+           
+            
+        }).catch(function(error){
+            console.error(error);
+        })
+    })
+</script>
+{{> footer }}
